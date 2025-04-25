@@ -1,4 +1,4 @@
-module goutils
+module github.com/misenkashari/goutils
 
 go 1.23
 
