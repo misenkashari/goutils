@@ -1,6 +1,6 @@
 package collections
 
-import "goutils/stream"
+import "github.com/misenkashari/goutils/stream"
 
 type Collection[T comparable] interface {
 	// Add adds an item to the collections.

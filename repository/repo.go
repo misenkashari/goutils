@@ -1,8 +1,8 @@
 package repository
 
 import (
+	"github.com/misenkashari/goutils/collections"
 	"gorm.io/gorm"
-	"goutils/collections"
 )
 
 // CrudRepository defines generic CRUD operations akin to JpaRepository.
