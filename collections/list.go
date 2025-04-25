@@ -2,19 +2,20 @@ package collections
 
 import (
 	"fmt"
-	"goutils/stream"
+	"github.com/misenkashari/goutils/stream"
+	"reflect"
 )
 
-type list[T comparable] struct {
+type list[T any] struct {
 	// items is the underlying slice that stores the items in the list.
 	items []T
 }
 
-func EmptyList[T comparable]() Collection[T] {
+func EmptyList[T any]() Collection[T] {
 	return &list[T]{items: []T{}}
 }
 
-func List[T comparable](items ...T) Collection[T] {
+func List[T any](items ...T) Collection[T] {
 	return &list[T]{items: items}
 }
 
@@ -22,18 +23,18 @@ func (l *list[T]) Add(item T) {
 	l.items = append(l.items, item)
 }
 
-func (l *list[T]) Remove(item T) {
+func (l *list[T]) Remove(item T, equals func(a, b T) bool) {
 	for i, v := range l.items {
-		if v == item {
+		if equals(v, item) {
 			l.items = append(l.items[:i], l.items[i+1:]...)
 			break
 		}
 	}
 }
 
-func (l *list[T]) Contains(item T) bool {
+func (l *list[T]) Contains(item T, check func(a, b T) bool) bool {
 	for _, v := range l.items {
-		if v == item {
+		if check(v, item) {
 			return true
 		}
 	}
@@ -53,15 +54,18 @@ func (l *list[T]) IsEmpty() bool {
 }
 
 func (l *list[T]) Set() Collection[T] {
-	m := make(map[T]struct{})
-	for _, item := range l.items {
-		m[item] = struct{}{}
-	}
+	uniqueItems := make([]T, 0, len(l.items))
 
-	var uniqueItems []T
-	for item := range m {
+outer:
+	for _, item := range l.items {
+		for _, u := range uniqueItems {
+			if reflect.DeepEqual(u, item) {
+				continue outer
+			}
+		}
 		uniqueItems = append(uniqueItems, item)
 	}
+
 	return &list[T]{items: uniqueItems}
 }
 

@@ -2,13 +2,13 @@ package collections
 
 import "github.com/misenkashari/goutils/stream"
 
-type Collection[T comparable] interface {
+type Collection[T any] interface {
 	// Add adds an item to the collections.
 	Add(item T)
 	// Remove removes an item from the collections.
-	Remove(item T)
+	Remove(item T, check func(a, b T) bool)
 	// Contains checks if the collections contains an item.
-	Contains(item T) bool
+	Contains(item T, check func(a, b T) bool) bool
 	// Size returns the number of items in the collections.
 	Size() int
 	// Clear clears the collections.

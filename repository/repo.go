@@ -7,7 +7,7 @@ import (
 
 // CrudRepository defines generic CRUD operations akin to JpaRepository.
 // T is the entity type, ID is the primary key type (e.g., uint, int64, string).
-type CrudRepository[T comparable, ID comparable] interface {
+type CrudRepository[T any, ID comparable] interface {
 	// Save persists the given entity.
 	Save(entity *T) error
 
@@ -34,12 +34,12 @@ type CrudRepository[T comparable, ID comparable] interface {
 
 // GormRepository is a GORM-based implementation of CrudRepository.
 // Instantiate with NewGormRepository for any model type.
-type GormRepository[T comparable, ID comparable] struct {
+type GormRepository[T any, ID comparable] struct {
 	db *gorm.DB
 }
 
 // Gorm constructs a new GormRepository for the given GORM DB instance.
-func Gorm[T comparable, ID comparable](db *gorm.DB) *GormRepository[T, ID] {
+func Gorm[T any, ID comparable](db *gorm.DB) *GormRepository[T, ID] {
 	return &GormRepository[T, ID]{db: db}
 }
 
