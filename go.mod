@@ -1,5 +1,7 @@
 module github.com/misenkashari/goutils
 
+retract v1.0.0
+
 go 1.23
 
 require (
